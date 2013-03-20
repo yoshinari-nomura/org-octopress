@@ -51,19 +51,19 @@
 
 ;;; Define Back-End
 
-(org-export-define-derived-backend jekyll html
-  :export-block ("HTML" "JEKYLL")
+(org-export-define-derived-backend 'jekyll 'html
+  :export-block '("HTML" "JEKYLL")
   :menu-entry
-  (?j "Jekyll: export to HTML with YAML front matter."
-      ((?H "As HTML buffer" org-jekyll-export-as-html)
-       (?h "As HTML file" org-jekyll-export-to-html)))
+  '(?j "Jekyll: export to HTML with YAML front matter."
+       ((?H "As HTML buffer" org-jekyll-export-as-html)
+        (?h "As HTML file" org-jekyll-export-to-html)))
   :translate-alist
-  ((template . org-jekyll-template) ;; add YAML front matter.
-   (inner-template . org-jekyll-inner-template)) ;; force body-only
+  '((template . org-jekyll-template) ;; add YAML front matter.
+    (inner-template . org-jekyll-inner-template)) ;; force body-only
   :options-alist
-  ((:jekyll-layout "JEKYLL_LAYOUT" nil org-jekyll-layout)
-   (:jekyll-categories "JEKYLL_CATEGORIES" nil org-jekyll-categories)
-   (:jekyll-published "JEKYLL_PUBLISHED" nil org-jekyll-published)))
+  '((:jekyll-layout "JEKYLL_LAYOUT" nil org-jekyll-layout)
+    (:jekyll-categories "JEKYLL_CATEGORIES" nil org-jekyll-categories)
+    (:jekyll-published "JEKYLL_PUBLISHED" nil org-jekyll-published)))
 
 
 ;;; Internal Filters
