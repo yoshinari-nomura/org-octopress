@@ -4,6 +4,7 @@
 
 ;; Author: Yoshinari Nomura <nom@quickhack.net>
 ;; Keywords: org, jekyll
+;; Version: 0.1
 
 ;;; Commentary:
 

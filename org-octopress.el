@@ -1,9 +1,12 @@
-;;; org-octopress.el -- Compose octopress articles using org-mode.
+;;; org-octopress.el --- Compose octopress articles using org-mode.
+
+;; Copyright (C) 2013 Yoshinari Nomura.
 
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>
 ;; Keywords: org, jekyll, octopress, blog
-
-;;; Commentay:
+;; Version: 0.1
+;; Package-Requires: ((orglue "0.1") (ctable "0.1.1"))
+;;; Commentary:
 
 ;; Basic settings:
 ;;
@@ -248,3 +251,5 @@
      (org-octopress--sanitize-title title))))
 
 (provide 'org-octopress)
+
+;;; org-octopress.el ends here
