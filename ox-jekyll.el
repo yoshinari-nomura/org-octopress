@@ -138,7 +138,7 @@ holding export options."
   (let ((backend 'jekyll) plist)
     (if filename
         (with-temp-buffer
-          (insert-file filename)
+          (insert-file-contents filename)
           (org-mode)
           (setq plist (org-export-get-environment backend))
           (setq plist (plist-put plist :input-file filename)))
@@ -154,7 +154,7 @@ holding export options."
   (let ((plist (org-jekyll-property filename)))
     (org-read-date
      nil nil
-     (org-export-data-with-backend (plist-get plist :date) backend plist))))
+     (org-export-data-with-backend (plist-get plist :date) 'jekyll plist))))
 
 (defun org-jekyll-create-filename ()
   (let ((date (org-jekyll-date-from-property))
@@ -185,7 +185,7 @@ holding export options."
                    'jekyll "*Org Jekyll HTML Export*"
                    subtreep visible-only body-only ext-plist)))
       ;; Set major mode.
-      (with-current-buffer outbuf (funcall org-html-display-buffer-mode))
+      (with-current-buffer outbuf (set-auto-mode t))
       (when org-export-show-temporary-export-buffer
         (switch-to-buffer-other-window outbuf)))))
 

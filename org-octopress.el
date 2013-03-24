@@ -25,6 +25,7 @@
 
 ;;; Code:
 
+(require 'cl)
 (require 'org)
 (require 'orglue-publish)
 (require 'ox-jekyll)
