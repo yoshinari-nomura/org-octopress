@@ -22,7 +22,6 @@
 
 ;;; Dependencies
 
-(eval-when-compile (require 'cl))
 (require 'ox-html)
 
 ;;; User Configurable Variables
