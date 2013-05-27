@@ -25,7 +25,7 @@
 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 (require 'org)
 (require 'orglue-publish)
 (require 'ox-jekyll)
@@ -149,7 +149,7 @@
    (mapconcat
     'identity
     (org-octopress--summary-command-help
-     (remove-duplicates
+     (cl-remove-duplicates
       (mapcar 'cdr (cdr org-octopress-summary-mode-map)))
      org-octopress-summary-mode-map)
     "\n")
