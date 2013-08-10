@@ -47,6 +47,10 @@
   :group 'org-export-jekyll
   :type 'string)
 
+(defcustom org-jekyll-comments ""
+  "Default comments (disqus) flag in Jekyll article."
+  :group 'org-export-jekyll
+  :type 'string)
 
 ;;; Define Back-End
 
@@ -62,7 +66,8 @@
   :options-alist
   '((:jekyll-layout "JEKYLL_LAYOUT" nil org-jekyll-layout)
     (:jekyll-categories "JEKYLL_CATEGORIES" nil org-jekyll-categories)
-    (:jekyll-published "JEKYLL_PUBLISHED" nil org-jekyll-published)))
+    (:jekyll-published "JEKYLL_PUBLISHED" nil org-jekyll-published)
+    (:jekyll-comments "JEKYLL_COMMENTS" nil org-jekyll-comments)))
 
 
 ;;; Internal Filters
