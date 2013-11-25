@@ -62,6 +62,7 @@
         (?h "As HTML file" org-jekyll-export-to-html)))
   :translate-alist
   '((template . org-jekyll-template) ;; add YAML front matter.
+    (src-block . org-jekyll-src-block)
     (inner-template . org-jekyll-inner-template)) ;; force body-only
   :options-alist
   '((:jekyll-layout "JEKYLL_LAYOUT" nil org-jekyll-layout)
@@ -71,6 +72,18 @@
 
 
 ;;; Internal Filters
+
+
+(defun org-jekyll-src-block (src-block contents info)
+  "Transcode SRC-BLOCK element into jekyll code template format.
+CONTENTS is nil.  INFO is a plist used as a communication
+channel."
+  (let ((language (org-element-property :language src-block))
+	(value (org-remove-indentation (org-element-property :value src-block))))
+    (format "{%% codeblock lang:%s %%}\n%s{%% endcodeblock %%}" language value)))
+
+
+
 
 ;;; Template
 
