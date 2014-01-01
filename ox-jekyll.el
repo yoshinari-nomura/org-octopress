@@ -3,6 +3,7 @@
 ;; Copyright (C) 2013  Yoshinari Nomura
 
 ;; Author: Yoshinari Nomura <nom@quickhack.net>
+;; Author: Justin Gordon <justin.gordon@gmail.com>
 ;; Keywords: org, jekyll
 ;; Version: 0.1
 
@@ -52,6 +53,23 @@
   :group 'org-export-jekyll
   :type 'string)
 
+(defcustom org-jekyll-use-src-plugin nil
+   "If t, org-jekyll exporter eagerly uses plugins instead of
+org-mode's original HTML stuff. For example:
+
+   #+BEGIN_SRC ruby
+     puts \"Hello world\"
+   #+END_SRC
+
+makes:
+
+  {% codeblock ruby %}
+  puts \"Hello world\"
+  {% endcodeblock %}"
+  :group 'org-export-jekyll-use-src-plugin
+  :type 'boolean)
+
+
 ;;; Define Back-End
 
 (org-export-define-derived-backend 'jekyll 'html
@@ -75,14 +93,17 @@
 
 
 (defun org-jekyll-src-block (src-block contents info)
-  "Transcode SRC-BLOCK element into jekyll code template format.
-CONTENTS is nil.  INFO is a plist used as a communication
-channel."
-  (let ((language (org-element-property :language src-block))
-	(value (org-remove-indentation (org-element-property :value src-block))))
-    (format "{%% codeblock lang:%s %%}\n%s{%% endcodeblock %%}" language value)))
-
-
+  "Transcode SRC-BLOCK element into jekyll code template format
+if `org-jekyll-use-src-plugin` is t. Otherwise, perform as
+`org-html-src-block`. CONTENTS holds the contents of the item.
+INFO is a plist used as a communication channel."
+  (if org-jekyll-use-src-plugin
+      (let ((language (org-element-property :language src-block))
+            (value (org-remove-indentation
+                    (org-element-property :value src-block))))
+        (format "{%% codeblock lang:%s %%}\n%s{%% endcodeblock %%}"
+                language value))
+    (org-export-with-backend 'html src-block contents info)))
 
 
 ;;; Template
