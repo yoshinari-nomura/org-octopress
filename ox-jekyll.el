@@ -33,6 +33,26 @@
   :group 'org-export
   :version "24.2")
 
+(defcustom org-jekyll-include-yaml-front-matter t
+  "If true, then include yaml-front-matter when exporting to html.
+
+If false, then you should include the yaml front matter like this at the top of the file:
+
+#+BEGIN_HTML
+---
+layout: post
+title: \"Upgrading Octopress\"
+date: 2013-09-15 22:08
+comments: true
+categories: [octopress, rubymine]
+keywords: Octopress
+description: Instructions on Upgrading Octopress
+---
+#+END_HTML"
+  :group 'org-export-jekyll
+  :type 'boolean)
+
+
 (defcustom org-jekyll-layout "post"
   "Default layout used in Jekyll article."
   :group 'org-export-jekyll
@@ -112,9 +132,12 @@ INFO is a plist used as a communication channel."
   "Return complete document string after HTML conversion.
 CONTENTS is the transcoded contents string. INFO is a plist
 holding export options."
-  (concat
-   (org-jekyll--yaml-front-matter info)
-   contents))
+  (if org-jekyll-include-yaml-front-matter
+      (concat
+       (org-jekyll--yaml-front-matter info)
+       contents)
+    contents
+    ))
 
 (defun org-jekyll-inner-template (contents info)
   "Return body of document string after HTML conversion.
