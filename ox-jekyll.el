@@ -3,6 +3,7 @@
 ;; Copyright (C) 2013  Yoshinari Nomura
 
 ;; Author: Yoshinari Nomura <nom@quickhack.net>
+;; Author: Justin Gordon <justin.gordon@gmail.com>
 ;; Keywords: org, jekyll
 ;; Version: 0.1
 
@@ -32,6 +33,26 @@
   :group 'org-export
   :version "24.2")
 
+(defcustom org-jekyll-include-yaml-front-matter t
+  "If true, then include yaml-front-matter when exporting to html.
+
+If false, then you should include the yaml front matter like this at the top of the file:
+
+#+BEGIN_HTML
+---
+layout: post
+title: \"Upgrading Octopress\"
+date: 2013-09-15 22:08
+comments: true
+categories: [octopress, rubymine]
+keywords: Octopress
+description: Instructions on Upgrading Octopress
+---
+#+END_HTML"
+  :group 'org-export-jekyll
+  :type 'boolean)
+
+
 (defcustom org-jekyll-layout "post"
   "Default layout used in Jekyll article."
   :group 'org-export-jekyll
@@ -52,6 +73,23 @@
   :group 'org-export-jekyll
   :type 'string)
 
+(defcustom org-jekyll-use-src-plugin nil
+   "If t, org-jekyll exporter eagerly uses plugins instead of
+org-mode's original HTML stuff. For example:
+
+   #+BEGIN_SRC ruby
+     puts \"Hello world\"
+   #+END_SRC
+
+makes:
+
+  {% codeblock ruby %}
+  puts \"Hello world\"
+  {% endcodeblock %}"
+  :group 'org-export-jekyll-use-src-plugin
+  :type 'boolean)
+
+
 ;;; Define Back-End
 
 (org-export-define-derived-backend 'jekyll 'html
@@ -62,6 +100,7 @@
         (?h "As HTML file" org-jekyll-export-to-html)))
   :translate-alist
   '((template . org-jekyll-template) ;; add YAML front matter.
+    (src-block . org-jekyll-src-block)
     (inner-template . org-jekyll-inner-template)) ;; force body-only
   :options-alist
   '((:jekyll-layout "JEKYLL_LAYOUT" nil org-jekyll-layout)
@@ -72,15 +111,33 @@
 
 ;;; Internal Filters
 
+
+(defun org-jekyll-src-block (src-block contents info)
+  "Transcode SRC-BLOCK element into jekyll code template format
+if `org-jekyll-use-src-plugin` is t. Otherwise, perform as
+`org-html-src-block`. CONTENTS holds the contents of the item.
+INFO is a plist used as a communication channel."
+  (if org-jekyll-use-src-plugin
+      (let ((language (org-element-property :language src-block))
+            (value (org-remove-indentation
+                    (org-element-property :value src-block))))
+        (format "{%% codeblock lang:%s %%}\n%s{%% endcodeblock %%}"
+                language value))
+    (org-export-with-backend 'html src-block contents info)))
+
+
 ;;; Template
 
 (defun org-jekyll-template (contents info)
   "Return complete document string after HTML conversion.
 CONTENTS is the transcoded contents string. INFO is a plist
 holding export options."
-  (concat
-   (org-jekyll--yaml-front-matter info)
-   contents))
+  (if org-jekyll-include-yaml-front-matter
+      (concat
+       (org-jekyll--yaml-front-matter info)
+       contents)
+    contents
+    ))
 
 (defun org-jekyll-inner-template (contents info)
   "Return body of document string after HTML conversion.
