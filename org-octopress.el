@@ -222,7 +222,7 @@
 (defun org-octopress (&optional title)
   "Org-mode and Octopress."
   (interactive)
-  (let ((buf (get-buffer-create "Octpress"))
+  (let ((buf (get-buffer-create "Octopress"))
         (cp))
     (switch-to-buffer buf)
     (setq buffer-read-only nil)
