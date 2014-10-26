@@ -88,6 +88,8 @@
        ))))
 
 (defun org-octopress-refresh ()
+  "Refresh \"Octopress\" buffer."
+  (interactive)
   (when (string= (buffer-name) "Octopress")
     (progn
       (kill-buffer)
@@ -115,6 +117,7 @@
   (setq org-octopress-summary-mode-map (make-sparse-keymap))
   (define-key org-octopress-summary-mode-map "w" 'org-octopress-new-post)
   (define-key org-octopress-summary-mode-map "d" 'org-octopress-delete-post)
+  (define-key org-octopress-summary-mode-map "r" 'org-octopress-refresh)
   (setq org-octopress-summary-mode-map
         (org-octopress--merge-keymap org-octopress-summary-mode-map ctbl:table-mode-map)))
 
