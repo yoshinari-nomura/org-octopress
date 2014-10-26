@@ -127,12 +127,16 @@
 (defun org-octopress-new-post (&optional title date)
   "New post."
   (interactive "sPermalink Text: ")
-  (let ((date (or date (org-read-date))))
-    (find-file (expand-file-name
-                (org-octopress--new-post-file-name title date)
-                org-octopress-directory-org-posts))
+  (let ((date (or date (org-read-date)))
+        (post-path (expand-file-name
+                    (org-octopress--new-post-file-name title date)
+                    org-octopress-directory-org-posts)))
+    (find-file post-path)
     (save-excursion
       (org-jekyll-insert-export-options-template title date org-octopress-setup-file nil "true"))
+    (save-buffer)
+    (org-octopress-refresh)
+    (find-file post-path)
     (search-forward "TITLE: " nil t)))
 
 ;; delete post
