@@ -87,6 +87,12 @@
         )
        ))))
 
+(defun org-octopress-refresh ()
+  (when (string= (buffer-name) "Octopress")
+    (progn
+      (kill-buffer)
+      (org-octopress))))
+
 ;;; Summary Mode
 
 ;; keymap
@@ -128,7 +134,8 @@
 (defun org-octopress-delete-post ()
   "Delete existing post."
   (interactive)
-  (delete-file (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component))))
+  (delete-file (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component)))
+  (org-octopress-refresh))
 
 ;; summary 
 (defun org-octopress-summary-mode ()
