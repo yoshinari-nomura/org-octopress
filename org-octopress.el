@@ -48,6 +48,7 @@
 (defvar org-octopress-directory-org-top   "~/octopress/source")
 (defvar org-octopress-directory-org-posts "~/octopress/source/blog")
 (defvar org-octopress-setup-file          "~/sys/lib/org-sty/octopress.org")
+(defvar org-octopress-component           nil)
 
 (add-hook 'orglue-before-export-dispatch-hook 'org-octopress-setup-publish-project)
 
@@ -127,7 +128,7 @@
 (defun org-octopress-delete-post ()
   "Delete existing post."
   (interactive)
-  (message "Not yet implemented."))
+  (delete-file (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component))))
 
 ;; summary 
 (defun org-octopress-summary-mode ()
@@ -222,22 +223,21 @@
 (defun org-octopress (&optional title)
   "Org-mode and Octopress."
   (interactive)
-  (let ((buf (get-buffer-create "Octopress"))
-        (cp))
+  (let ((buf (get-buffer-create "Octopress")))
     (switch-to-buffer buf)
     (setq buffer-read-only nil)
     (erase-buffer)
     (insert (org-octopress--summary-header title))
     (save-excursion
-      (setq cp (org-octopress--summary-table 
+      (setq org-octopress-component (org-octopress--summary-table
                 (org-octopress--scan-post) org-octopress-summary-mode-map)))
     (ctbl:cp-add-click-hook
-     cp
+     org-octopress-component
      (lambda ()
-       (find-file (nth 4 (ctbl:cp-get-selected-data-row cp)))))
+       (find-file (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component)))))
     (org-octopress-summary-mode)
     (ctbl:navi-goto-cell
-     (ctbl:find-first-cell (ctbl:component-dest cp)))
+     (ctbl:find-first-cell (ctbl:component-dest org-octopress-component)))
     ))
 
 ;;; Helpers
