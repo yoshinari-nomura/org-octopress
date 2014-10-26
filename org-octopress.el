@@ -87,13 +87,15 @@
         )
        ))))
 
+(defvar org-octopress-summary-buffer nil
+  "Main buffer, showing summary table")
+
 (defun org-octopress-refresh ()
   "Refresh \"Octopress\" buffer."
   (interactive)
-  (when (string= (buffer-name) "Octopress")
-    (progn
-      (kill-buffer)
-      (org-octopress))))
+  (when org-octopress-summary-buffer
+    (kill-buffer org-octopress-summary-buffer)
+    (org-octopress)))
 
 ;;; Summary Mode
 
@@ -233,22 +235,22 @@
 (defun org-octopress (&optional title)
   "Org-mode and Octopress."
   (interactive)
-  (let ((buf (get-buffer-create "Octopress")))
-    (switch-to-buffer buf)
-    (setq buffer-read-only nil)
-    (erase-buffer)
-    (insert (org-octopress--summary-header title))
-    (save-excursion
-      (setq org-octopress-component (org-octopress--summary-table
-                (org-octopress--scan-post) org-octopress-summary-mode-map)))
-    (ctbl:cp-add-click-hook
-     org-octopress-component
-     (lambda ()
-       (find-file (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component)))))
-    (org-octopress-summary-mode)
-    (ctbl:navi-goto-cell
-     (ctbl:find-first-cell (ctbl:component-dest org-octopress-component)))
-    ))
+  (setq org-octopress-summary-buffer (get-buffer-create "Octopress"))
+  (switch-to-buffer org-octopress-summary-buffer)
+  (setq buffer-read-only nil)
+  (erase-buffer)
+  (insert (org-octopress--summary-header title))
+  (save-excursion
+    (setq org-octopress-component (org-octopress--summary-table
+                                   (org-octopress--scan-post) org-octopress-summary-mode-map)))
+  (ctbl:cp-add-click-hook
+   org-octopress-component
+   (lambda ()
+     (find-file (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component)))))
+  (org-octopress-summary-mode)
+  (ctbl:navi-goto-cell
+   (ctbl:find-first-cell (ctbl:component-dest org-octopress-component)))
+  )
 
 ;;; Helpers
 
