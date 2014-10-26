@@ -143,7 +143,15 @@
 (defun org-octopress-delete-post ()
   "Delete existing post."
   (interactive)
-  (delete-file (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component)))
+  (let ((org-post-path (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component))))
+    (delete-file org-post-path)
+    (let ((html-post-path
+         (concat (substring
+                  (replace-regexp-in-string
+                   (regexp-quote (expand-file-name org-octopress-directory-org-posts))
+                   (expand-file-name org-octopress-directory-posts)
+                   org-post-path) 0 -4) ".html")))
+    (ignore-errors (delete-file html-post-path))))
   (org-octopress-refresh))
 
 ;; summary 
