@@ -48,6 +48,7 @@
 (defvar org-octopress-directory-org-top   "~/octopress/source")
 (defvar org-octopress-directory-org-posts "~/octopress/source/blog")
 (defvar org-octopress-setup-file          "~/sys/lib/org-sty/octopress.org")
+(defvar org-octopress-component           nil)
 
 (add-hook 'orglue-before-export-dispatch-hook 'org-octopress-setup-publish-project)
 
@@ -86,6 +87,16 @@
         )
        ))))
 
+(defvar org-octopress-summary-buffer nil
+  "Main buffer, showing summary table")
+
+(defun org-octopress-refresh ()
+  "Refresh \"Octopress\" buffer."
+  (interactive)
+  (when org-octopress-summary-buffer
+    (kill-buffer org-octopress-summary-buffer)
+    (org-octopress)))
+
 ;;; Summary Mode
 
 ;; keymap
@@ -108,6 +119,7 @@
   (setq org-octopress-summary-mode-map (make-sparse-keymap))
   (define-key org-octopress-summary-mode-map "w" 'org-octopress-new-post)
   (define-key org-octopress-summary-mode-map "d" 'org-octopress-delete-post)
+  (define-key org-octopress-summary-mode-map "r" 'org-octopress-refresh)
   (setq org-octopress-summary-mode-map
         (org-octopress--merge-keymap org-octopress-summary-mode-map ctbl:table-mode-map)))
 
@@ -115,19 +127,32 @@
 (defun org-octopress-new-post (&optional title date)
   "New post."
   (interactive "sPermalink Text: ")
-  (let ((date (or date (org-read-date))))
-    (find-file (expand-file-name
-                (org-octopress--new-post-file-name title date)
-                org-octopress-directory-org-posts))
+  (let ((date (or date (org-read-date)))
+        (post-path (expand-file-name
+                    (org-octopress--new-post-file-name title date)
+                    org-octopress-directory-org-posts)))
+    (find-file post-path)
     (save-excursion
       (org-jekyll-insert-export-options-template title date org-octopress-setup-file nil "true"))
+    (save-buffer)
+    (org-octopress-refresh)
+    (find-file post-path)
     (search-forward "TITLE: " nil t)))
 
 ;; delete post
 (defun org-octopress-delete-post ()
   "Delete existing post."
   (interactive)
-  (message "Not yet implemented."))
+  (let ((org-post-path (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component))))
+    (delete-file org-post-path)
+    (let ((html-post-path
+         (concat (substring
+                  (replace-regexp-in-string
+                   (regexp-quote (expand-file-name org-octopress-directory-org-posts))
+                   (expand-file-name org-octopress-directory-posts)
+                   org-post-path) 0 -4) ".html")))
+    (ignore-errors (delete-file html-post-path))))
+  (org-octopress-refresh))
 
 ;; summary 
 (defun org-octopress-summary-mode ()
@@ -222,23 +247,22 @@
 (defun org-octopress (&optional title)
   "Org-mode and Octopress."
   (interactive)
-  (let ((buf (get-buffer-create "Octpress"))
-        (cp))
-    (switch-to-buffer buf)
-    (setq buffer-read-only nil)
-    (erase-buffer)
-    (insert (org-octopress--summary-header title))
-    (save-excursion
-      (setq cp (org-octopress--summary-table 
-                (org-octopress--scan-post) org-octopress-summary-mode-map)))
-    (ctbl:cp-add-click-hook
-     cp
-     (lambda ()
-       (find-file (nth 4 (ctbl:cp-get-selected-data-row cp)))))
-    (org-octopress-summary-mode)
-    (ctbl:navi-goto-cell
-     (ctbl:find-first-cell (ctbl:component-dest cp)))
-    ))
+  (setq org-octopress-summary-buffer (get-buffer-create "Octopress"))
+  (switch-to-buffer org-octopress-summary-buffer)
+  (setq buffer-read-only nil)
+  (erase-buffer)
+  (insert (org-octopress--summary-header title))
+  (save-excursion
+    (setq org-octopress-component (org-octopress--summary-table
+                                   (org-octopress--scan-post) org-octopress-summary-mode-map)))
+  (ctbl:cp-add-click-hook
+   org-octopress-component
+   (lambda ()
+     (find-file (nth 4 (ctbl:cp-get-selected-data-row org-octopress-component)))))
+  (org-octopress-summary-mode)
+  (ctbl:navi-goto-cell
+   (ctbl:find-first-cell (ctbl:component-dest org-octopress-component)))
+  )
 
 ;;; Helpers
 
