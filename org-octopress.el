@@ -90,13 +90,6 @@
 (defvar org-octopress-summary-buffer nil
   "Main buffer, showing summary table")
 
-(defun org-octopress-refresh ()
-  "Refresh \"Octopress\" buffer."
-  (interactive)
-  (when org-octopress-summary-buffer
-    (kill-buffer org-octopress-summary-buffer)
-    (org-octopress)))
-
 ;;; Summary Mode
 
 ;; keymap
@@ -114,11 +107,6 @@
                            (assoc (car x) keymap1))
                        nil x))
                  keymap2))))
-
-(defun org-octopress-publish ()
-  "Publish \"Octopress\" project."
-  (interactive)
-  (org-publish "octopress"))
 
 (unless org-octopress-summary-mode-map
   (setq org-octopress-summary-mode-map (make-sparse-keymap))
@@ -159,6 +147,18 @@
                    org-post-path) 0 -4) ".html")))
     (ignore-errors (delete-file html-post-path))))
   (org-octopress-refresh))
+
+(defun org-octopress-refresh ()
+  "Refresh \"Octopress\" buffer."
+  (interactive)
+  (when org-octopress-summary-buffer
+    (kill-buffer org-octopress-summary-buffer)
+    (org-octopress)))
+
+(defun org-octopress-publish ()
+  "Publish \"Octopress\" project."
+  (interactive)
+  (org-publish "octopress"))
 
 ;; summary 
 (defun org-octopress-summary-mode ()
