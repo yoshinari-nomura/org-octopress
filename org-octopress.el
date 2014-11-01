@@ -157,6 +157,7 @@
 
 (defun org-octopress-publish ()
   "Publish \"Octopress\" project."
+  (org-octopress-setup-publish-project)
   (interactive)
   (org-publish "octopress"))
 
