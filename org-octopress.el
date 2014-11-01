@@ -115,11 +115,17 @@
                        nil x))
                  keymap2))))
 
+(defun org-octopress-publish ()
+  "Publish \"Octopress\" project."
+  (interactive)
+  (org-publish "octopress"))
+
 (unless org-octopress-summary-mode-map
   (setq org-octopress-summary-mode-map (make-sparse-keymap))
   (define-key org-octopress-summary-mode-map "w" 'org-octopress-new-post)
   (define-key org-octopress-summary-mode-map "d" 'org-octopress-delete-post)
   (define-key org-octopress-summary-mode-map "r" 'org-octopress-refresh)
+  (define-key org-octopress-summary-mode-map "x" 'org-octopress-publish)
   (setq org-octopress-summary-mode-map
         (org-octopress--merge-keymap org-octopress-summary-mode-map ctbl:table-mode-map)))
 
