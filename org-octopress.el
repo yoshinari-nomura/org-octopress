@@ -113,7 +113,7 @@
   (define-key org-octopress-summary-mode-map "w" 'org-octopress-new-post)
   (define-key org-octopress-summary-mode-map "d" 'org-octopress-delete-post)
   (define-key org-octopress-summary-mode-map "r" 'org-octopress-refresh)
-  (define-key org-octopress-summary-mode-map "x" 'org-octopress-publish)
+  (define-key org-octopress-summary-mode-map "P" 'org-octopress-publish)
   (define-key org-octopress-summary-mode-map "D" 'org-octopress-deploy)
   (setq org-octopress-summary-mode-map
         (org-octopress--merge-keymap org-octopress-summary-mode-map ctbl:table-mode-map)))
