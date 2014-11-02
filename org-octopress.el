@@ -50,6 +50,7 @@
 (defvar org-octopress-setup-file          "~/sys/lib/org-sty/octopress.org")
 (defvar org-octopress-component           nil)
 (defvar org-octopress-commit-message      "Happy blogging~")
+(defvar org-octopress-deploy-to-heroku    nil)
 
 (add-hook 'orglue-before-export-dispatch-hook 'org-octopress-setup-publish-project)
 
@@ -168,9 +169,15 @@
   "Execute \"rake gen_deploy\" command."
   (interactive)
   (async-shell-command
-   (concat
-    "(cd " org-octopress-directory-top "; "
-    "export LC_ALL=en_US.UTF-8; rake gen_deploy)")))
+   (let* ((command (concat "(cd " org-octopress-directory-top "; "
+                           "export LC_ALL=en_US.UTF-8; rake generate; ")))
+     (if org-octopress-deploy-to-heroku
+         (concat command
+                 "git add --all; "
+                 "git commit -m \""
+                 org-octopress-commit-message "\"; "
+                 "git push heroku master)")
+       (concat command "rake deploy)")))))
 
 (defun org-octopress-commit ()
   "Commit all changes."
