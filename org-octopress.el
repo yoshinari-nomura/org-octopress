@@ -49,6 +49,7 @@
 (defvar org-octopress-directory-org-posts "~/octopress/source/blog")
 (defvar org-octopress-setup-file          "~/sys/lib/org-sty/octopress.org")
 (defvar org-octopress-component           nil)
+(defvar org-octopress-commit-message      "Happy blogging~")
 
 (add-hook 'orglue-before-export-dispatch-hook 'org-octopress-setup-publish-project)
 
@@ -115,6 +116,7 @@
   (define-key org-octopress-summary-mode-map "r" 'org-octopress-refresh)
   (define-key org-octopress-summary-mode-map "P" 'org-octopress-publish)
   (define-key org-octopress-summary-mode-map "D" 'org-octopress-deploy)
+  (define-key org-octopress-summary-mode-map "C" 'org-octopress-commit)
   (setq org-octopress-summary-mode-map
         (org-octopress--merge-keymap org-octopress-summary-mode-map ctbl:table-mode-map)))
 
@@ -167,8 +169,16 @@
   (interactive)
   (async-shell-command
    (concat
-    (concat "(cd " org-octopress-directory-top)
-    "; export LC_ALL=en_US.UTF-8; rake gen_deploy)")))
+    "(cd " org-octopress-directory-top "; "
+    "export LC_ALL=en_US.UTF-8; rake gen_deploy)")))
+
+(defun org-octopress-commit ()
+  "Commit all changes."
+  (interactive)
+  (async-shell-command
+   (concat
+    "(cd " org-octopress-directory-top "; "
+    "git add --all; git commit -m \"" org-octopress-commit-message "\";)")))
 
 ;; summary 
 (defun org-octopress-summary-mode ()
