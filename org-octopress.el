@@ -114,6 +114,7 @@
   (define-key org-octopress-summary-mode-map "d" 'org-octopress-delete-post)
   (define-key org-octopress-summary-mode-map "r" 'org-octopress-refresh)
   (define-key org-octopress-summary-mode-map "x" 'org-octopress-publish)
+  (define-key org-octopress-summary-mode-map "D" 'org-octopress-deploy)
   (setq org-octopress-summary-mode-map
         (org-octopress--merge-keymap org-octopress-summary-mode-map ctbl:table-mode-map)))
 
@@ -160,6 +161,14 @@
   (org-octopress-setup-publish-project)
   (interactive)
   (org-publish "octopress"))
+
+(defun org-octopress-deploy ()
+  "Execute \"rake gen_deploy\" command."
+  (interactive)
+  (async-shell-command
+   (concat
+    (concat "(cd " org-octopress-directory-top)
+    "; export LC_ALL=en_US.UTF-8; rake gen_deploy)")))
 
 ;; summary 
 (defun org-octopress-summary-mode ()
