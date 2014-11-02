@@ -166,7 +166,7 @@
   (org-publish "octopress"))
 
 (defun org-octopress-deploy ()
-  "Execute \"rake gen_deploy\" command."
+  "Deploy."
   (interactive)
   (async-shell-command
    (let* ((command (concat "(cd " org-octopress-directory-top "; "
@@ -180,7 +180,7 @@
        (concat command "rake deploy)")))))
 
 (defun org-octopress-commit ()
-  "Commit all changes."
+  "Commit all changes and push."
   (interactive)
   (async-shell-command
    (concat
