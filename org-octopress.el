@@ -185,7 +185,9 @@
   (async-shell-command
    (concat
     "(cd " org-octopress-directory-top "; "
-    "git add --all; git commit -m \"" org-octopress-commit-message "\";)")))
+    "git add --all; "
+    "git commit -m \"" org-octopress-commit-message "\"; "
+    "git push origin source)")))
 
 ;; summary 
 (defun org-octopress-summary-mode ()
