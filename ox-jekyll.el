@@ -207,7 +207,11 @@ holding export options."
 
 (defun org-jekyll-property (keys &optional filename)
   (let ((plist (org-jekyll-property-list filename)))
-    (mapcar (lambda (key) (org-export-data-with-backend (plist-get plist key) 'jekyll plist))
+    (mapcar (lambda (key)
+              (let ((value (plist-get plist key)))
+                (setq value (if (listp value) (car value) value))
+                (if (stringp value)
+                    (substring-no-properties value))))
             keys)))
 
 (defun org-jekyll-date-from-property (&optional filename)
