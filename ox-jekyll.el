@@ -247,7 +247,7 @@ holding export options."
         `(org-export-as 'jekyll ,subtreep ,visible-only ,body-only ',ext-plist))
     (let ((outbuf (org-export-to-buffer
                    'jekyll "*Org Jekyll HTML Export*"
-                   subtreep visible-only body-only ext-plist)))
+                   nil subtreep visible-only body-only ext-plist)))
       ;; Set major mode.
       (with-current-buffer outbuf (set-auto-mode t))
       (when org-export-show-temporary-export-buffer
@@ -267,10 +267,10 @@ holding export options."
           (let ((org-export-coding-system org-html-coding-system))
             `(expand-file-name
               (org-export-to-file
-               'jekyll ,file ,subtreep ,visible-only ,body-only ',ext-plist))))
+               'jekyll ,file nil ,subtreep ,visible-only ,body-only ',ext-plist))))
       (let ((org-export-coding-system org-html-coding-system))
         (org-export-to-file
-         'jekyll file subtreep visible-only body-only ext-plist)))))
+         'jekyll file nil subtreep visible-only body-only ext-plist)))))
 
 ;;;###autoload
 (defun org-jekyll-publish-to-html (plist filename pub-dir)
