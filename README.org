@@ -2,6 +2,8 @@
 #+AUTHOR: Yoshinari Nomura (乃村 能成)
 #+DATE: 2013-03-19
 
+[[http://melpa.org/#/org-octopress][file:http://melpa.org/packages/org-octopress-badge.svg]]
+
 * What is Org-octopress?
   Org-octopress is a package to help users those who want to write
   blog articles in org-style using [[http://octopress.org/][Octopress]] (or Jekyll).
