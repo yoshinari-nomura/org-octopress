@@ -45,6 +45,7 @@ title: \"Upgrading Octopress\"
 date: 2013-09-15 22:08
 comments: true
 categories: [octopress, rubymine]
+tags: tech news
 keywords: Octopress
 description: Instructions on Upgrading Octopress
 ---
@@ -60,6 +61,11 @@ description: Instructions on Upgrading Octopress
 
 (defcustom org-jekyll-categories ""
   "Default space-separated categories in Jekyll article."
+  :group 'org-export-jekyll
+  :type 'string)
+
+(defcustom org-jekyll-tags ""
+  "Default space-separated tags in Jekyll article."
   :group 'org-export-jekyll
   :type 'string)
 
@@ -105,6 +111,7 @@ makes:
   :options-alist
   '((:jekyll-layout "JEKYLL_LAYOUT" nil org-jekyll-layout)
     (:jekyll-categories "JEKYLL_CATEGORIES" nil org-jekyll-categories)
+    (:jekyll-tags "JEKYLL_TAGS" nil org-jekyll-tags)
     (:jekyll-published "JEKYLL_PUBLISHED" nil org-jekyll-published)
     (:jekyll-comments "JEKYLL_COMMENTS" nil org-jekyll-comments)))
 
@@ -170,6 +177,8 @@ holding export options."
          (org-jekyll--get-option info :jekyll-layout org-jekyll-layout))
         (categories
          (org-jekyll--get-option info :jekyll-categories org-jekyll-categories))
+        (tags
+         (org-jekyll--get-option info :jekyll-tags org-jekyll-tags))
         (published
          (org-jekyll--get-option info :jekyll-published org-jekyll-published))
         (comments
@@ -182,6 +191,7 @@ holding export options."
      "\"\ndate: "     date
      "\nlayout: "     layout
      "\ncategories: " categories
+     "\ntags: "       tags
      "\npublished: "  published
      "\ncomments: "   comments
      "\n---\n")))
@@ -285,11 +295,12 @@ Return output file name."
 
 ;;;###autoload
 (defun org-jekyll-insert-export-options-template
-  (&optional title date setupfile categories published layout)
+  (&optional title date setupfile categories tags published layout)
   "Insert a settings template for Jekyll exporter."
   (interactive)
   (let ((layout     (or layout org-jekyll-layout))
         (published  (or published org-jekyll-published))
+        (tags       (or tags org-jekyll-tags))
         (categories (or categories org-jekyll-categories)))
     (save-excursion
       (insert (format (concat
@@ -298,6 +309,7 @@ Return output file name."
                        "\n#+SETUPFILE: "         setupfile
                        "\n#+JEKYLL_LAYOUT: "     layout
                        "\n#+JEKYLL_CATEGORIES: " categories
+                       "\n#+JEKYLL_TAGS: "       tags
                        "\n#+JEKYLL_PUBLISHED: "  published
                        "\n\n* \n\n{{{more}}}"))))))
 

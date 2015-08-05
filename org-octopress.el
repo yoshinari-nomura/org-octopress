@@ -133,7 +133,7 @@
                     org-octopress-directory-org-posts)))
     (find-file post-path)
     (save-excursion
-      (org-jekyll-insert-export-options-template title date org-octopress-setup-file nil "true"))
+      (org-jekyll-insert-export-options-template title date org-octopress-setup-file nil nil "true"))
     (save-buffer)
     (org-octopress-refresh)
     (find-file post-path)
