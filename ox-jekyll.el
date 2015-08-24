@@ -191,7 +191,7 @@ holding export options."
      "\"\ndate: "     date
      "\nlayout: "     layout
      "\ncategories: " categories
-     "\ntags: "       tags
+     "\ntags: "       (mapconcat #'(lambda (text)(concat "\n- " text)) (split-string tags) " ")
      "\npublished: "  published
      "\ncomments: "   comments
      "\n---\n")))
