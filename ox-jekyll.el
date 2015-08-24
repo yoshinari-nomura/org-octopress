@@ -182,7 +182,10 @@ holding export options."
         (published
          (org-jekyll--get-option info :jekyll-published org-jekyll-published))
         (comments
-         (org-jekyll--get-option info :jekyll-comments)))
+         (org-jekyll--get-option info :jekyll-comments))
+        (convert-to-yaml-list
+         (lambda (arg)
+           (mapconcat #'(lambda (text)(concat "\n- " text)) (split-string arg) " "))))
     (unless (equal published "true")
       (setq title (concat "[PREVIEW] " title)))
     (concat
@@ -190,8 +193,8 @@ holding export options."
      "\ntitle: \""    title
      "\"\ndate: "     date
      "\nlayout: "     layout
-     "\ncategories: " categories
-     "\ntags: "       (mapconcat #'(lambda (text)(concat "\n- " text)) (split-string tags) " ")
+     "\ncategories: " (funcall convert-to-yaml-list  categories)
+     "\ntags: "       (funcall convert-to-yaml-list tags)
      "\npublished: "  published
      "\ncomments: "   comments
      "\n---\n")))
