@@ -98,10 +98,10 @@ makes:
 
 ;;; Define Back-End
 
-(org-export-define-derived-backend 'jekyll 'html
-  :export-block '("HTML" "JEKYLL")
+(org-export-define-derived-backend jekyll html
+  :export-block ("HTML" "JEKYLL")
   :menu-entry
-  '(?j "Jekyll: export to HTML with YAML front matter."
+  (?j "Jekyll: export to HTML with YAML front matter."
        ((?H "As HTML buffer" org-jekyll-export-as-html)
         (?h "As HTML file" org-jekyll-export-to-html)))
   :translate-alist
@@ -109,7 +109,7 @@ makes:
     (src-block . org-jekyll-src-block)
     (inner-template . org-jekyll-inner-template)) ;; force body-only
   :options-alist
-  '((:jekyll-layout "JEKYLL_LAYOUT" nil org-jekyll-layout)
+   ((:jekyll-layout "JEKYLL_LAYOUT" nil org-jekyll-layout)
     (:jekyll-categories "JEKYLL_CATEGORIES" nil org-jekyll-categories)
     (:jekyll-tags "JEKYLL_TAGS" nil org-jekyll-tags)
     (:jekyll-published "JEKYLL_PUBLISHED" nil org-jekyll-published)
