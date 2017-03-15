@@ -1,6 +1,6 @@
 ;;; ox-jekyll.el --- Export Jekyll articles using org-mode.
 
-;; Copyright (C) 2013  Yoshinari Nomura
+;; Copyright (C) 2013-2017  Yoshinari Nomura
 
 ;; Author: Yoshinari Nomura <nom@quickhack.net>
 ;; Author: Justin Gordon <justin.gordon@gmail.com>
