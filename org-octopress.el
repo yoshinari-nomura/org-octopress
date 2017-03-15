@@ -5,7 +5,7 @@
 ;; Author:  Yoshinari Nomura <nom@quickhack.net>
 ;; Keywords: org, jekyll, octopress, blog
 ;; Version: 0.1
-;; Package-Requires: ((org "8.0") (orglue "0.1") (ctable "0.1.1"))
+;; Package-Requires: ((org "9.0") (orglue "0.1") (ctable "0.1.1"))
 ;;; Commentary:
 
 ;; Basic settings:

@@ -38,7 +38,7 @@
 
 If false, then you should include the yaml front matter like this at the top of the file:
 
-#+BEGIN_HTML
+#+BEGIN_EXPORT HTML
 ---
 layout: post
 title: \"Upgrading Octopress\"
@@ -49,7 +49,7 @@ tags: tech news
 keywords: Octopress
 description: Instructions on Upgrading Octopress
 ---
-#+END_HTML"
+#+END_EXPORT HTML"
   :group 'org-export-jekyll
   :type 'boolean)
 
@@ -99,7 +99,6 @@ makes:
 ;;; Define Back-End
 
 (org-export-define-derived-backend 'jekyll 'html
-  :export-block '("HTML" "JEKYLL")
   :menu-entry
   '(?j "Jekyll: export to HTML with YAML front matter."
        ((?H "As HTML buffer" org-jekyll-export-as-html)

@@ -8,7 +8,7 @@
   Org-octopress is a package to help users those who want to write
   blog articles in org-style using [[http://octopress.org/][Octopress]] (or Jekyll).
 
-  *Note*: This package is compatible with the upcoming org 8.0 system. (aka New Exporter)
+  *Note*: This package is compatible with the org 9.0 system.
 
 * Requirements
 ** Necessary packages:
